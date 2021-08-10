@@ -1,6 +1,25 @@
 import { createInput } from "./components/input.js";
+import Observable from "./observable.js";
 
 createInput();
+
+const observer1 = function (data) {
+  const city = data;
+  searchCity(city);
+  searchForSuggestion(city);
+}
+
+const myTest = document.getElementById('input-search');
+
+createObserver(myTest, 'change', observer1);
+
+function createObserver(myElement, myEvent, myObserver) {
+  const observable = new Observable();
+  observable.addObserver(myObserver);
+  myElement.addEventListener(myEvent, function (event) {
+    observable.notifyObservers(myElement.value);
+  })
+}
 
 // VARIABLES
 const apiKey = "8e3450a31538fb8106416400bcb75801";
@@ -11,7 +30,7 @@ function searchCity(city) {
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=${apiKey}`)
     .then(res => res.json())
     .then(data => {
-      if(data.cod != 404) {
+      if (data.cod != 404) {
         const {
           coord: {
             lon,
@@ -44,15 +63,15 @@ function searchCity(city) {
 
 function searchForSuggestion(city) {
   fetch(`https://geo.api.gouv.fr/communes?nom=${city}&fields=departement&boost=population&limit=5`)
-  .then(res => res.json())
-  .then(data => {
-    const section = document.querySelector('#suggestions');
-    section.innerHTML = '';
-    if (data) {
-      data.forEach(o => generateSuggestion(o));
-    }
-  })
-  .catch(error => console.log(error));
+    .then(res => res.json())
+    .then(data => {
+      const section = document.querySelector('#suggestions');
+      section.innerHTML = '';
+      if (data) {
+        data.forEach(o => generateSuggestion(o));
+      }
+    })
+    .catch(error => console.log(error));
 }
 
 function generateSuggestion(data) {
@@ -85,20 +104,20 @@ function generateSuggestion(data) {
 }
 
 
-$("#input-search").change(function() {
-  const city = this.value;
-  searchCity(city);
-  searchForSuggestion(city);
-});
+// $("#input-search").change(function() {
+//   const city = this.value;
+//   searchCity(city);
+//   searchForSuggestion(city);
+// });
 
 
 // MAP CONTROL
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoieWFubmljazc3IiwiYSI6ImNrczVxOW1nNzAzZWoydnBzazczMTR4dGgifQ.R2OzBn8Edm9-z_b4e0fzRg'
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 18,
+  id: 'mapbox/streets-v11',
+  tileSize: 512,
+  zoomOffset: -1,
+  accessToken: 'pk.eyJ1IjoieWFubmljazc3IiwiYSI6ImNrczVxOW1nNzAzZWoydnBzazczMTR4dGgifQ.R2OzBn8Edm9-z_b4e0fzRg'
 }).addTo(map);
