@@ -1,18 +1,24 @@
 import { createInput } from "./components/input.js";
+import { createSuggestions } from "./components/suggestions.js";
+import { createMap } from "./components/map.js";
+import { createWeather } from "./components/weather.js";
 import Observable from "./observable.js";
 
+// création des composants
 createInput();
-
-const observer1 = function (data) {
-  const city = data;
-  searchCity(city);
-  searchForSuggestion(city);
+createSuggestions();
+createMap();
+createWeather();
+// création des fonctions de callback pour les observers
+const inputObserver = function (data) {
+  searchCity(data);
+  searchForSuggestion(data);
 }
 
-const myTest = document.getElementById('input-search');
+// création des observers
+createObserver(document.getElementById('input-search'), 'change', inputObserver);
 
-createObserver(myTest, 'change', observer1);
-
+// la fonction qui permet de créer un observer
 function createObserver(myElement, myEvent, myObserver) {
   const observable = new Observable();
   observable.addObserver(myObserver);

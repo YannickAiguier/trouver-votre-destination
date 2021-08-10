@@ -2,7 +2,7 @@ const myHtml = `<section id="input" class="py-5 flex flex-col justify-center ite
 
 function createInput() {
     const result = $.parseHTML(myHtml);
-    $('main').prepend(result);
+    $('main').append(result);
 }
 
 export { createInput };
