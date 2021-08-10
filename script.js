@@ -1,3 +1,7 @@
+import input from "./components/input.js";
+
+input();
+
 // VARIABLES
 const apiKey = "8e3450a31538fb8106416400bcb75801";
 
