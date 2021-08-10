@@ -1,4 +1,4 @@
-export default function () {
+function createInput() {
     let label = document.createElement("label");
     label.htmlFor = "input-search";
     label.innerHTML = "Entrer votre destination :";
@@ -11,3 +11,4 @@ export default function () {
     $('#input-search').addClass("text-center mt-2 h-14 rounded-3xl w-5/6 text-10 bg-gray-50 px-10 border-blue-500 border-2");
 }
 
+export {createInput };
