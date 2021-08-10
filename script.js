@@ -1,6 +1,5 @@
-import { createInput, testParser } from "./components/input.js";
+import { createInput } from "./components/input.js";
 
-testParser();
 createInput();
 
 // VARIABLES
